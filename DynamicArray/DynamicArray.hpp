@@ -32,38 +32,38 @@ public:
     /*
     Add a new data to the end of current array, O(1)
     */
-    void add(T data);
+    void add(const T data);
     /*
     Pushes forward all objects in front of the given index,
     then sets the data at the given index, O(n)
     */
-    void insert(int index, T data);
+    void insert(const int index, const T data);
     /*
     Sets the given index of mArr as data, O(1)
     */
-    void set(int index, T data);
+    void set(const int index, const T data);
     /*
     Removes the object at the given index and pushes all the array contents back, O(n)
     */
-    void remove(int index);
+    void remove(const int index);
     /*
     Get the size of array, O(1)
     */
-    int size();
+    int size() const;
     /*
     Get the max size of array, O(1)
     */
-    int maxsize();
+    int maxsize() const;
     /*
     Check if the array is empty, O(1)
     */
-    bool isempty();
+    bool isempty() const;
     /*
     Print array
     */
-    void print();
+    void print() const;
 };
 
 #include "DynamicArray.tpp"
 
-#endif
+#endif // _DYNAMIC_ARRAY_HPP_

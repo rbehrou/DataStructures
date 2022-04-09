@@ -1,5 +1,8 @@
+// C++ header files
 #include <iostream>
 #include <memory>
+
+// class header file
 #include "DynamicArray.hpp"
 
 int main()

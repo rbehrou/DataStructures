@@ -40,7 +40,7 @@ T DynamicArray<T>::get(const int index) const
 
 // Class set function
 template <typename T>
-void DynamicArray<T>::set(int index, T data)
+void DynamicArray<T>::set(const int index, const T data)
 {
     if (index < mSize && index >= 0)
         mArr[index] = data;
@@ -50,7 +50,7 @@ void DynamicArray<T>::set(int index, T data)
 
 // Class add function
 template <typename T>
-void DynamicArray<T>::add(T data)
+void DynamicArray<T>::add(const T data)
 {
     if (mSize == mMaxSize)
     {
@@ -66,7 +66,7 @@ void DynamicArray<T>::add(T data)
 
 // Class insert function
 template <typename T>
-void DynamicArray<T>::insert(int index, T data)
+void DynamicArray<T>::insert(const int index, const T data)
 {
     if (index < mSize && index >= 0)
     {
@@ -94,7 +94,7 @@ void DynamicArray<T>::insert(int index, T data)
 
 // Class remove function
 template <typename T>
-void DynamicArray<T>::remove(int index)
+void DynamicArray<T>::remove(const int index)
 {
     if (index < mSize && index >= 0)
     {
@@ -119,28 +119,28 @@ void DynamicArray<T>::remove(int index)
 
 // Class size function
 template <typename T>
-int DynamicArray<T>::size()
+int DynamicArray<T>::size() const
 {
     return mSize;
 }
 
 // Class max size function
 template <typename T>
-int DynamicArray<T>::maxsize()
+int DynamicArray<T>::maxsize() const
 {
     return mMaxSize;
 }
 
 // Class is empty function
 template <typename T>
-bool DynamicArray<T>::isempty()
+bool DynamicArray<T>::isempty() const
 {
     return mSize == 0;
 }
 
 // Class print function
 template <typename T>
-void DynamicArray<T>::print()
+void DynamicArray<T>::print() const
 {
     std::cout << "Array: " << std::endl;
     for (auto i = 0; i < mSize; ++i)
