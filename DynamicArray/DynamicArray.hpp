@@ -46,6 +46,7 @@ public:
     Removes the object at the given index and pushes all the array contents back, O(n)
     */
     void remove(const int index);
+    
     /*
     Get the size of array, O(1)
     */
