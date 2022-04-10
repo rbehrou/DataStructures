@@ -1,31 +1,40 @@
 // class default constructor
 template <typename T>
-Stack<T>::Stack() : size(0), head(nullptr) {}
+Queue<T>::Queue() : size(0), head(nullptr), tail(nullptr) {}
 
-// push a new item to the top of stack
+// enqueue to the tail of queue
 template <typename T>
-void Stack<T>::push(const T data)
+void Queue<T>::enqueue(const T data)
 {
     // create a new temp node
-    Node<T> *temp = new Node<T>(data, nullptr);
-    // assign the next node of temp to the head node
-    temp->next = head;
-    // make the temp node as a top of stack
-    head = temp;
+    Node<T> *temp = new Node<T>(data, nullptr, nullptr);
+    // check if the head is nullptr or not
+    if (tail == nullptr)
+    {
+        head = temp;
+        tail = temp;
+    }
+    else
+    {
+        // assign the next node of temp to the head node
+        temp->prev = tail;
+        tail->next = temp;
+        tail = temp;
+    }
     // increase the size
     size++;
 }
 
-// pup an item from the top of stack
+// dequeue from the head of queue
 template <typename T>
-void Stack<T>::pop()
+void Queue<T>::dequeue()
 {
     // create a new temp node
     Node<T> *temp = new Node<T>;
     // check if the head node is nullptr or not
     if (isempty())
     {
-        throw("pop: the head node is nullptr!");
+        throw("dequeue: the head node is nullptr!");
     }
     else
     {
@@ -33,6 +42,8 @@ void Stack<T>::pop()
         temp = head;
         // shift the head node to the next node to release the head node
         head = head->next;
+        // assign the prev pointer to the temp
+        head->prev = temp;
         // delete the temp node
         delete temp;
         // decrease the size
@@ -40,36 +51,26 @@ void Stack<T>::pop()
     }
 }
 
-// show the item on the top of stack
+// return the size of queue
 template <typename T>
-T Stack<T>::peak()
-{
-    if (!isempty())
-        return head->data;
-    else
-        throw("peak: the head node is nullptr!");
-}
-
-// return the size of stack
-template <typename T>
-int Stack<T>::getsize() const
+int Queue<T>::getsize() const
 {
     return size;
 }
 
-// check if the stack is empty
+// check if the queue is empty
 template <typename T>
-bool Stack<T>::isempty() const
+bool Queue<T>::isempty() const
 {
     return getsize() == 0;
 }
 
-// print the contents of stack
+// print the contents of queue
 template <typename T>
-void Stack<T>::print()
+void Queue<T>::print()
 {
     Node<T> *trav = head;
-    // traverse through the stack
+    // traverse through the queue
     while (trav != nullptr)
     {
         std::cout << "The node value is: " << trav->data << std::endl;
