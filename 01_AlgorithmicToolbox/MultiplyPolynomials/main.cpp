@@ -22,33 +22,46 @@ std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
     return vec;
 };
 
-// sorted array binary search (divide and conquer algorithm)
-int BinarySearch(const std::vector<int> &A, const int &low, const int &up, const int &key)
+void printPoly(const std::vector<int> &A) 
 {
-    // check the edge cases
-    if (up < low)
-        return low - 1;
-    // compute the middle of the array
-    int mid = low + floor((up - low) / 2);
+    // size
+    auto n = A.size();
+   for (int i = n - 1; i >= 0; i--) 
+   {
+      std::cout << A[i];
+      if (i != 0) {
+         std::cout << "x^" << i;
+         std::cout << " + ";
+      }
+   }
+   std::cout << std::endl;
+};
 
-    // recursive calls
-    if (key == A[mid])
-        return mid;
-    else if (key < A[mid]) // the key is in the first half of the array
-        return BinarySearch(A, low, mid - 1, key);
-    else if (key > A[mid]) // the key is in the second half of the array
-        return BinarySearch(A, mid + 1, up, key);
-    else
+// multiplying polynomials (naive algorithm)
+std::vector<int> MultPolyNaive(const std::vector<int> &A, const std::vector<int> &B)
+{
+    // initialize the product array
+    auto n = A.size();
+    auto m = B.size();
+    auto np = n + m - 1;
+    std::vector<int> Cp(np, 0);
+    // create a loop
+    for (auto i = 0; i < n; ++i)
     {
-        std::cout << "something went wrong in the binary search!" << std::endl;
-        return 0;
+        for (auto j = 0; j < m; ++j)
+        {
+            Cp[i + j] += A[i] * B[j];
+        }
     }
+    // return the product
+    return Cp;
 }
 
 int main()
 {
     // initialize
-    int MaxSize = 50;
+    int MaxN = 10;
+    int MaxM = 8;
     int MaxItr = 200;
     int Itr = 0;
 
@@ -56,45 +69,52 @@ int main()
     while (Itr < MaxItr)
     {
         // test cases
-        std::vector<std::vector<int>> test_vec{{genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)},
-                                               {genRand(MaxSize, 10000)}};
-        std::vector<int> key_vec{(rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize),
-                                 (rand() % MaxSize)};
+        std::vector<std::vector<int>> test_vecA{{genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)},
+                                                {genRand(MaxN, 100)}};
+        std::vector<std::vector<int>> test_vecB{{genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)},
+                                                {genRand(MaxM, 100)}};
 
         // loop over number of test cases
         std::cout << "-------------------------------------------------------------" << std::endl;
-        for (auto i = 0; i < test_vec.size(); ++i)
+        for (auto i = 0; i < test_vecA.size(); ++i)
         {
-            auto index = BinarySearch(test_vec[i], 0, MaxSize, test_vec[i][key_vec[i]]);
-            if (test_vec[i][key_vec[i]] == test_vec[i][index])
-                std::cout << "The key: " << test_vec[i][key_vec[i]] << " was found at index: " << index << std::endl;
-            else
-            {
-                std::cout << "ERROR: the index for the key: (" << key_vec[i] << ", " << test_vec[i][key_vec[i]] << "), at iteration: " << i << " not found!" << std::endl;
-                throw std::invalid_argument("received index out of the bound!");
-            }
+            // print ploy
+            printPoly(test_vecA[i]);
+            printPoly(test_vecB[i]);
+            // call product poly
+            auto c_vec = MultPolyNaive(test_vecA[i], test_vecB[i]);
+            // print ploy
+            printPoly(c_vec);
+            // if (test_vecA[i][key_vec[i]] == test_vecA[i][index])
+            //     std::cout << "The key: " << test_vecA[i][key_vec[i]] << " was found at index: " << index << std::endl;
+            // else
+            // {
+            //     std::cout << "ERROR: the index for the key: (" << key_vec[i] << ", " << test_vecA[i][key_vec[i]] << "), at iteration: " << i << " not found!" << std::endl;
+            //     throw std::invalid_argument("received index out of the bound!");
+            // }
         }
         std::cout << "-------------------------------------------------------------" << std::endl;
 
         // update
         Itr += 1;
     }
+
     // return
     return 0;
 }
