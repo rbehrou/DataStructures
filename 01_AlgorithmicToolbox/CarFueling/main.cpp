@@ -7,6 +7,10 @@
 // helper function to generate vector of sorted random nubmer
 std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
 {
+    // Use current time as seed for random generator
+    // https://www.geeksforgeeks.org/rand-and-srand-in-ccpp/#:~:text=The%20rand()%20function%20is,numbers%20each%20time%20it%20runs.
+    srand(time(0));
+
     // generate random vector of integer and sort it
     std::vector<int> vec(MaxSize);
     vec[0] = 0;
@@ -65,16 +69,16 @@ int main()
                                            {genRand(10, 1000)},
                                            {genRand(10, 1000)},
                                            {genRand(10, 1000)}};
-    std::vector<int> l_vec{250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100),
-                           250 +  (rand() % 100)};
+    std::vector<int> l_vec{250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100),
+                           250 + (rand() % 100)};
 
     // loop over number of test cases and call the gcd
     std::cout << "-------------------------------------------------------------" << std::endl;
