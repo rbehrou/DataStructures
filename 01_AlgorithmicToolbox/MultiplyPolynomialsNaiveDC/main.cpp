@@ -38,8 +38,8 @@ void printPoly(const std::vector<int> &A)
     std::cout << std::endl;
 };
 
-// multiplying polynomials (naive algorithm)
-std::vector<int> MultPolyNaive(const std::vector<int> &A, const std::vector<int> &B)
+// multiplying polynomials (naive divide and conquer algorithm)
+std::vector<int> MultPolyNaiveDC(const std::vector<int> &A, const std::vector<int> &B)
 {
     // initialize the product array
     auto n = A.size();

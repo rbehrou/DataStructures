@@ -2,23 +2,30 @@
 
 Given two $n-1$ degree polynomials: 
 
-$$a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + \cdots + a_{1}x^{1} + a_{0}x^{0}$$
+$$A(x) = a_{n-1}x^{n-1} + a_{n-2}x^{n-2} + \cdots + a_{1}x^{1} + a_{0}x^{0}$$
 
-$$b_{n-1}x^{n-1} + b_{n-2}x^{n-2} + \cdots + b_{1}x^{1} + b_{0}x^{0}$$
+$$B(x) = b_{n-1}x^{n-1} + b_{n-2}x^{n-2} + \cdots + b_{1}x^{1} + b_{0}x^{0}$$
 
-The naive multiplication product will be:
+For the naive divide and conquer algorithm lets divide $A(x)$ as follows:
 
-$$c_{2n-2}x^{2n-2} + c_{2n-3}x^{2n-3} + \cdots + c_{1}x^{1} + c_{0}x^{0}$$
+$$A(x) = D_{1}(x) x^{n/2} + D_{0}(x)$$ 
 
 where
 
-$$c_{2n-2} = a_{n-1}b_{n-1}$$
+$$D_{1}(x) = a_{n-1}x^{n/2-1} + a_{n-2}x^{n/2-2} + \cdots + a_{n/2}$$
 
-$$c_{2n-3} = a_{n-1}b_{n-2} + a_{n-2}b_{n-1}$$
+$$D_{0}(x) = a_{n/2-1}x^{n/2-1} + a_{n/2-2}x^{n/2-2} + \cdots + a_{0}$$
 
-$$\vdots$$
+In the same manner, let:
 
-$$c_{2} = a_{2}b_{0} + a_{1}b_{1} + a_{0}b_{2}$$
+$$B(x) = E_{1}(x) x^{n/2} + E_{0}(x)$$ 
 
-$$c_{1} = a_{1}b_{0} + a_{0}b_{1}$$
+where
+
+$$E_{1}(x) = b_{n-1}x^{n/2-1} + b_{n-2}x^{n/2-2} + \cdots + b_{n/2}$$
+
+$$E_{0}(x) = b_{n/2-1}x^{n/2-1} + b_{n/2-2}x^{n/2-2} + \cdots + b_{0}$$
+
+The $$A(x) \times B(x)$$ product will be:
+
 
