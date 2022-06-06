@@ -22,19 +22,20 @@ std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
     return vec;
 };
 
-void printPoly(const std::vector<int> &A) 
+void printPoly(const std::vector<int> &A)
 {
     // size
     auto n = A.size();
-   for (int i = n - 1; i >= 0; i--) 
-   {
-      std::cout << A[i];
-      if (i != 0) {
-         std::cout << "x^" << i;
-         std::cout << " + ";
-      }
-   }
-   std::cout << std::endl;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        std::cout << A[i];
+        if (i != 0)
+        {
+            std::cout << "x^" << i;
+            std::cout << " + ";
+        }
+    }
+    std::cout << std::endl;
 };
 
 // multiplying polynomials (naive algorithm)
@@ -62,7 +63,7 @@ int main()
     // initialize
     int MaxN = 10;
     int MaxM = 8;
-    int MaxItr = 200;
+    int MaxItr = 100;
     int Itr = 0;
 
     // create a while loop (try to break the code)
@@ -91,25 +92,21 @@ int main()
                                                 {genRand(MaxM, 100)}};
 
         // loop over number of test cases
-        std::cout << "-------------------------------------------------------------" << std::endl;
         for (auto i = 0; i < test_vecA.size(); ++i)
         {
             // print ploy
+            std::cout << "-------------------------------------------------------------" << std::endl;
+            std::cout << "The A polynomial is: " << std::endl;
             printPoly(test_vecA[i]);
+            std::cout << "The B polynomial is: " << std::endl;
             printPoly(test_vecB[i]);
             // call product poly
             auto c_vec = MultPolyNaive(test_vecA[i], test_vecB[i]);
             // print ploy
+            std::cout << "The C polynomial is: " << std::endl;
             printPoly(c_vec);
-            // if (test_vecA[i][key_vec[i]] == test_vecA[i][index])
-            //     std::cout << "The key: " << test_vecA[i][key_vec[i]] << " was found at index: " << index << std::endl;
-            // else
-            // {
-            //     std::cout << "ERROR: the index for the key: (" << key_vec[i] << ", " << test_vecA[i][key_vec[i]] << "), at iteration: " << i << " not found!" << std::endl;
-            //     throw std::invalid_argument("received index out of the bound!");
-            // }
+            std::cout << "-------------------------------------------------------------" << std::endl;
         }
-        std::cout << "-------------------------------------------------------------" << std::endl;
 
         // update
         Itr += 1;
