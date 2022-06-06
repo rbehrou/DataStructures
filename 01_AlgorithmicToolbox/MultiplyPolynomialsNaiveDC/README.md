@@ -1,4 +1,4 @@
-# Question:
+# Naive divide and conquer:
 
 Given two $n-1$ degree polynomials: 
 
@@ -26,6 +26,10 @@ $$E_{1}(x) = b_{n-1}x^{n/2-1} + b_{n-2}x^{n/2-2} + \cdots + b_{n/2}$$
 
 $$E_{0}(x) = b_{n/2-1}x^{n/2-1} + b_{n/2-2}x^{n/2-2} + \cdots + b_{0}$$
 
-The $$A(x) \times B(x)$$ product will be:
+Therefore, the
+
+ $$A(x) \times B(x) = (D_{1}x^{n/2} + D_{0})(E_{1}x^{n/2} + E_{0})$$
+
+ $$= (D_{1}E_{1})x^{n} + (D_{1}E_{0}+D_{0}E_{1})x^{n/2} + D_{0}E_{0}$$
 
 
