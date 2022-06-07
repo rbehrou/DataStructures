@@ -43,79 +43,36 @@ std::vector<int> slice(std::vector<int> const &v, int m, int n)
     return vec;
 };
 
-std::vector<int> Merge(std::vector<int> &v1, std::vector<int> &v2)
+// last element is taken as pivot
+int Partition(std::vector<int> &A, const int &left, const int &right)
 {
-
-    // v3 is the output vector
-    // it will store the merged vector obtained by merging v1 and v2
-    std::vector<int> v3;
-
-    // initialize
-    auto i = 0;
-    auto j = 0;
-    auto n = v1.size();
-    auto m = v2.size();
-
-    // traverse each elemenst of v1 and v2
-    while (i < n && j < m)
+    // pivot
+    auto pivot = right;
+    auto j = left;
+    for (auto i = left; i < right; ++i)
     {
-
-        // comparing v1[i] and v2[j]
-        // if v1[i] is smaller than v2[j]
-        // push v1[i] to v3 and increment i
-        // if v2[j] is smaller than v1[i]
-        // push v2[j] to v3 and increment j
-        if (v1[i] <= v2[j])
+        if (A[i] < A[pivot])
         {
-            v3.push_back(v1[i]);
-            ++i;
-        }
-        else
-        {
-            v3.push_back(v2[j]);
+            std::swap(A[i], A[j]);
             ++j;
         }
     }
-
-    // push the remaining elements in v1 to v3
-    while (i < n)
-    {
-        v3.push_back(v1[i]);
-        ++i;
-    }
-
-    // push the remaining elements in v2 to v3
-    while (j < m)
-    {
-        v3.push_back(v2[j]);
-        ++j;
-    }
-
-    return v3;
-};
+    std::swap(A[j], A[pivot]);
+    return j;
+}
 
 // merge sort
-std::vector<int> MergeSort(const std::vector<int> &A)
+void QuickSort(std::vector<int> &A, const int &left, const int &right)
 {
-    // initialize
-    auto n = A.size();
-    // base case
-    if (n == 1)
-        return A;
-
-    // get the mid size
-    auto m = n / 2;
-    // get the sliced vectors
-    auto left_slice = slice(A, 0, m);
-    auto right_slice = slice(A, m, n);
-    // for the left half
-    auto B = MergeSort(left_slice);
-    // for the right half
-    auto C = MergeSort(right_slice);
-    // merge two vectors
-    auto D = Merge(B, C);
-    // return
-    return D;
+    // safeguard
+    if (left < right)
+    { // get the partition (A[m] is in the final position)
+        auto m = Partition(A, left, right);
+        // recursive call to the left part
+        QuickSort(A, left, m - 1);
+        // recursive call to the right part
+        QuickSort(A, m + 1, right);
+    }
 }
 
 int main()
@@ -148,15 +105,15 @@ int main()
             std::cout << "The vector BEFORE sorting: " << std::endl;
             printVec(test_vecA[i]);
             // call the sorting algorithm
-            auto merged_vec = MergeSort(test_vecA[i]);
+            QuickSort(test_vecA[i], 0, test_vecA[i].size()-1);
             // print vector
             std::cout << "The vector AFTER sorting: " << std::endl;
-            printVec(merged_vec);
+            printVec(test_vecA[i]);
             std::cout << "-------------------------------------------------------------" << std::endl;
             // check
-            for (auto j = 1; j < merged_vec.size(); ++j)
+            for (auto j = 1; j < test_vecA[i].size(); ++j)
             {
-                if (merged_vec[j] < merged_vec[j-1])
+                if (test_vecA[i][j] < test_vecA[i][j - 1])
                     throw std::invalid_argument("the sorting algorithm is not right!");
             }
         }

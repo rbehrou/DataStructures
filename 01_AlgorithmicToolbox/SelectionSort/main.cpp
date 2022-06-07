@@ -21,6 +21,7 @@ std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
     return vec;
 };
 
+// helper function to print vector
 void printVec(const std::vector<int> &x)
 {
     std::cout << "[" << x[0];
@@ -80,14 +81,14 @@ int main()
             std::cout << "-------------------------------------------------------------" << std::endl;
             std::cout << "The vector BEFORE sorting: " << std::endl;
             printVec(test_vecA[i]);
-            // call the sorting function
+            // call the sorting algorithm
             SelectionSort(test_vecA[i]);
             // print vector
             std::cout << "The vector AFTER sorting: " << std::endl;
             printVec(test_vecA[i]);
             std::cout << "-------------------------------------------------------------" << std::endl;
             // check
-            for (int j = 1; j < test_vecA[i].size(); ++j)
+            for (auto j = 1; j < test_vecA[i].size(); ++j)
             {
                 if (test_vecA[i][j] < test_vecA[i][j - 1])
                     throw std::invalid_argument("the sorting algorithm is not right!");
