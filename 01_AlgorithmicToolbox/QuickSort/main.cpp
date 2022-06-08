@@ -4,10 +4,15 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <chrono>
+#include <thread>
 
 // helper function to generate vector of random integer
 std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
 {
+    // https://stackoverflow.com/questions/4184468/sleep-for-milliseconds
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
     // Use current time as seed for random generator
     // https://www.geeksforgeeks.org/rand-and-srand-in-ccpp/#:~:text=The%20rand()%20function%20is,numbers%20each%20time%20it%20runs.
     srand(time(0));
@@ -61,12 +66,13 @@ int Partition(std::vector<int> &A, const int &left, const int &right)
     return j;
 }
 
-// merge sort
+// quick sort
 void QuickSort(std::vector<int> &A, const int &left, const int &right)
 {
     // safeguard
     if (left < right)
-    { // get the partition (A[m] is in the final position)
+    {
+        // get the partition (A[m] is in the final position)
         auto m = Partition(A, left, right);
         // recursive call to the left part
         QuickSort(A, left, m - 1);
@@ -80,42 +86,29 @@ int main()
     // initialize
     int MaxN = 50;
     int MaxRand = 100;
-    int MaxItr = 50;
+    int MaxItr = 200;
     int Itr = 0;
 
     // create a while loop (try to break the code)
     while (Itr < MaxItr)
     {
-        // test cases
-        std::vector<std::vector<int>> test_vecA{{genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)},
-                                                {genRand(MaxN, MaxRand)}};
-        // loop over number of test cases
-        for (auto i = 0; i < test_vecA.size(); ++i)
+        // test case
+        std::vector<int> test_vecA = genRand(MaxN, MaxRand);
+        // print vector
+        std::cout << "-------------------------------------------------------------" << std::endl;
+        std::cout << "The vector BEFORE sorting: " << std::endl;
+        printVec(test_vecA);
+        // call the sorting algorithm
+        QuickSort(test_vecA, 0, test_vecA.size() - 1);
+        // print vector
+        std::cout << "The vector AFTER sorting: " << std::endl;
+        printVec(test_vecA);
+        std::cout << "-------------------------------------------------------------" << std::endl;
+        // check
+        for (auto j = 1; j < test_vecA.size(); ++j)
         {
-            // print vector
-            std::cout << "-------------------------------------------------------------" << std::endl;
-            std::cout << "The vector BEFORE sorting: " << std::endl;
-            printVec(test_vecA[i]);
-            // call the sorting algorithm
-            QuickSort(test_vecA[i], 0, test_vecA[i].size()-1);
-            // print vector
-            std::cout << "The vector AFTER sorting: " << std::endl;
-            printVec(test_vecA[i]);
-            std::cout << "-------------------------------------------------------------" << std::endl;
-            // check
-            for (auto j = 1; j < test_vecA[i].size(); ++j)
-            {
-                if (test_vecA[i][j] < test_vecA[i][j - 1])
-                    throw std::invalid_argument("the sorting algorithm is not right!");
-            }
+            if (test_vecA[j] < test_vecA[j - 1])
+                throw std::invalid_argument("the sorting algorithm is not right!");
         }
 
         // update
