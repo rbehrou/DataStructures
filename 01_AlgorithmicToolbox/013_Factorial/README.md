@@ -1,14 +1,13 @@
 # Question:
 
-Fibonacci Numbers:
+Factorial:
 
 $$
 F_n =
 \left
 \{\begin{matrix}
-0, & n = 0, \\
-1, & n = 1, \\
-F_{n-1} + F_{n-2}, & n > 1.
+1, & n = 0, \\
+F_{n} * F_{n-1}, & n > 0.
 \end{matrix}
 \right.
 $$
