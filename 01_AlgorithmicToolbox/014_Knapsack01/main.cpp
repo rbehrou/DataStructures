@@ -117,6 +117,55 @@ int Knapsack01DPTopDown(const std::vector<int> &profits, const std::vector<int> 
     return Knapsack01DPTopDownRecursive(memo, profits, weights, capacity, 0);
 }
 
+// Bottom-up Dynamic Programming with Tabulation
+int Knapsack01DPBottomUp(const std::vector<int> &profits, const std::vector<int> &weights, const int &capacity)
+{
+    assert(profits.size() == weights.size());
+    if (capacity == 0 || profits.empty())
+        return 0;
+    std::vector<std::vector<int>> dp_bu(profits.size(), std::vector<int>(capacity + 1));
+
+    // initialize
+    auto num_p = profits.size();
+
+    // pupulate for capacity of zero (first column)
+    for (auto i = 0; i < num_p; ++i)
+    {
+        dp_bu[i][0] = 0;
+    }
+
+    // if we have only one weight, we will take it if it is not more than the capacity
+    for (auto c = 0; c <= capacity; c++)
+    {
+        if (weights[0] <= c)
+        {
+            dp_bu[0][c] = profits[0];
+        }
+    }
+
+    // process all sub-arrays for all the capacities, from index (1,1)
+    for (auto i = 1; i < num_p; ++i)
+    {
+        for (auto c = 1; c <= capacity; c++)
+        {
+            auto prof_1 = 0;
+            auto prof_2 = 0;
+            // include the item, if it is not more than the capacity
+            if (weights[i] <= c)
+            {
+                prof_1 = profits[i] + dp_bu[i - 1][c - weights[i]];
+            }
+            // exclude the item
+            prof_2 = dp_bu[i - 1][c];
+            // take maximum
+            dp_bu[i][c] = std::max(prof_1, prof_2);
+        }
+    }
+
+    // maximum profit will be at the bottom-right corner.
+    return dp_bu[num_p - 1][capacity];
+}
+
 // main function
 int main()
 {
@@ -152,9 +201,13 @@ int main()
         auto max_profit_r = Knapsack01(profits, weights, capacity[0]);
         // call knapsack01TopDown function
         auto max_profit_topdown = Knapsack01DPTopDown(profits, weights, capacity[0]);
+        // call knapsack01BottomUp function
+        auto max_profit_bottomup = Knapsack01DPBottomUp(profits, weights, capacity[0]);
         // print
-        std::cout << "The maximum profit for capacity of: " << capacity[0] << " with recursive: " << max_profit_r << " with dp top-down: " << max_profit_topdown << std::endl;
-        
+        std::cout << "The maximum profit for capacity of: " << capacity[0] << " with recursive: " << 
+        max_profit_r << ", with dp top-down: " << max_profit_topdown <<
+        ", with dp bottom-up: " << max_profit_bottomup << std::endl;
+
         // update
         Itr += 1;
     }
