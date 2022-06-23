@@ -30,15 +30,27 @@ std::vector<int> genRand(const int &MaxSize, const int &MaxRand)
         srand(time(0));
     }
     // sort vector
-    std::sort( vec.begin(), vec.end() );
+    std::sort(vec.begin(), vec.end());
     // remove duplication
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 
     // return
     return vec;
-};
+}
 
-// brute-force recursive call
+// helper function to print vector
+void printVec(const std::vector<int> &x)
+{
+    std::cout << "[" << x[0];
+    for (int i = 1; i < x.size(); ++i)
+    {
+        std::cout << ", ";
+        std::cout << x[i];
+    }
+    std::cout << "]" << std::endl;
+}
+
+// brute-force recursive call (time complexity is O(2^n))
 int Knapsack01Recursive(const std::vector<int> &profits, const std::vector<int> &weights, const int &capacity, const int &index)
 {
     // base case
@@ -68,18 +80,44 @@ int Knapsack01(const std::vector<int> &profits, const std::vector<int> &weights,
     return Knapsack01Recursive(profits, weights, capacity, 0);
 }
 
-// helper function to print vector
-void printVec(const std::vector<int> &x)
+// Top-down Dynamic Programming with Memoization
+int Knapsack01DPTopDownRecursive(std::vector<std::vector<int>> &memo, const std::vector<int> &profits, const std::vector<int> &weights, const int &capacity, const int &index)
 {
-    std::cout << "[" << x[0];
-    for (int i = 1; i < x.size(); ++i)
-    {
-        std::cout << ", ";
-        std::cout << x[i];
-    }
-    std::cout << "]" << std::endl;
-};
+    // base case
+    if (index >= profits.size() || capacity <= 0)
+        return 0;
 
+    // if we have already solved a similar problem, return the result from memory
+    if (memo[index][capacity] != -1)
+        return memo[index][capacity];
+
+    // initialize
+    auto prof_1 = 0;
+
+    // if weights[index] <= capacity for the current index, add it and recursively decrease the capacity
+    if (weights[index] <= capacity)
+    {
+        prof_1 = profits[index] + Knapsack01DPTopDownRecursive(memo, profits, weights, capacity - weights[index], index + 1);
+    }
+
+    // otherwise skip and increase the index by 1
+    auto prof_2 = Knapsack01DPTopDownRecursive(memo, profits, weights, capacity, index + 1);
+
+    // return max profit
+    memo[index][capacity] = std::max(prof_1, prof_2);
+    return memo[index][capacity];
+}
+
+// We can use memoization to overcome the overlapping sub-problems
+// Top-down Dynamic Programming with Memoization
+int Knapsack01DPTopDown(const std::vector<int> &profits, const std::vector<int> &weights, const int &capacity)
+{
+    assert(profits.size() == weights.size());
+    std::vector<std::vector<int>> memo(profits.size(), std::vector<int>(capacity + 1, -1));
+    return Knapsack01DPTopDownRecursive(memo, profits, weights, capacity, 0);
+}
+
+// main function
 int main()
 {
     // initialize
@@ -111,9 +149,12 @@ int main()
         std::cout << "The profits vector: " << std::endl;
         printVec(profits);
         // call knapsack01 function
-        auto max_profit = Knapsack01(profits, weights, capacity[0]);
+        auto max_profit_r = Knapsack01(profits, weights, capacity[0]);
+        // call knapsack01TopDown function
+        auto max_profit_topdown = Knapsack01DPTopDown(profits, weights, capacity[0]);
         // print
-        std::cout << "The maximum profit for capacity of: " << capacity[0] << " is: " << max_profit << std::endl;
+        std::cout << "The maximum profit for capacity of: " << capacity[0] << " with recursive: " << max_profit_r << " with dp top-down: " << max_profit_topdown << std::endl;
+        
         // update
         Itr += 1;
     }
